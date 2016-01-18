@@ -80,13 +80,24 @@ div.playingicon, div.recommendation{
     text-align: center;
     display:inline-block;
 }
+div.scplayingicon{
+    width:19%;
+    text-align: center;
+    display: inline-block;
+    float:left;
+}
+
 
 div.player{
     width:60%;
     text-align: center;
     display:inline-block;
 }
-button#npicon{
+div.scplayingicon button{
+    background: url("../img/soundcloudlogo.png") center no-repeat;
+    background-size: cover;
+ }
+div.playingicon button{
     background: url("../img/playingicon.gif") center no-repeat;
     background-size: cover;
 }
@@ -95,11 +106,15 @@ button#recommendicon{
     background: url("../img/recommendation.png") center no-repeat;
     background-size: cover;
 }
-div.footer button{
+div.footer button,div.scplayingicon button{
     height:30px;
     border-width: 0px;
     width:30px;
     margin-top:10px;
+}
+div.scplayingicon button{
+    margin-top:2px;
+    width:50px;
 }
 button#play{
      background: url("../img/play.png") center no-repeat;
@@ -153,14 +168,196 @@ button#pause,button#play{
 
 div.soundcloud{
     width:100%;
-    height:500px;
+    min-height:500px;
     display:block;
     color:black;
 }
-div.soundcloud div.info{
-    height:100px;
+div.soundcloud div.scplayer{
+    height:500px;
     width:100%;
-    font-size:20px;
     text-align: center;
-    color:green;
+}
+div.soundcloud div.info{
+    min-height:45px;
+    width:100%;
+    text-align: center;
+}
+div.songtitle{
+    width:100%;
+    height:100%;
+    padding-top: 8px;
+}
+div.infolist{
+    min-height:450px;
+}
+div.info:nth-child(odd){
+    background-color: black;
+}
+div.info:nth-child(odd) a{
+    color:white;
+}
+div.info:nth-child(even){
+    background-color: white;
+}
+div.info:nth-child(even) a{
+    color:black;
+}
+div.info a{
+    word-wrap: break-word;
+    font-size:20px;
+    margin-top:5px;
+}
+div.scback{
+    padding-top: 8px;
+    background-color: orangered;
+}
+div.scback a{
+    color:silver;
+    font-weight: bolder;
+    font-size:23px;
+}
+div.soundcloud a:hover{
+    text-decoration: underline;
+}
+div#player{
+    min-height:450px;
+}
+div#player iframe{
+    height: 450px;
+}
+div#recommendationModal div.modal-body{
+    padding:0px;
+}
+div#recommendationModal div.modal-footer{
+    padding:10px;
+}
+
+div.resultnav, div.scback{
+    width:100%;
+    height:50px;
+    text-align: center;
+}
+div.resultnav{
+    background-color: black;
+}
+div.resultnav div.btn-group a,div.resultnav div.btn-group span{
+    display:inline-block;
+    color:white;
+}
+div.resultnav div.btn-group a:active{
+    color:gray;
+}
+div.resultnav div.btn-group a.active{
+    background-color: #ffffff;
+    color:black;
+}
+div.resultnav div.btn-group{
+    text-align: center;
+    margin-top:10px;
+}
+div.pagenum{
+    display:inline-block;
+}
+
+.animation{
+    -webkit-transition:all linear 0.3s;
+    transition:all linear 0.3s;
+}
+.animation.ng-hide{
+    opacity:0;
+    top:0;
+    /* transform: scale(0.8); */
+}
+.animation.ng-show{
+    top:0;
+}
+.animation.ng-include{
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+}
+.animation.ng-enter, .animation.ng-leave {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+    opacity:1;
+}
+
+.animation.ng-enter {
+    opacity:0;
+}
+.animation.ng-enter.ng-enter-active {
+    opacity:1;
+}
+
+.animation.ng-leave {
+    opacity:0;
+}
+.animation.ng-leave.ng-leave-active {
+    opacity:0;
+}
+
+.repeat-animation.ng-enter,
+.repeat-animation.ng-move {
+    -webkit-transition: all linear 1s;
+    -moz-transition: all linear 1s;
+    -o-transition: all linear 1s;
+    transition: all linear 1s;
+
+    position:relative;
+}
+.repeat-animation.ng-enter {
+    opacity: 0;
+}
+.repeat-animation.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+.repeat-animation.ng-leave {
+    opacity: 1;
+}
+.repeat-animation.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+.repeat-animation.ng-move {
+    left:2px;
+    opacity: 0.5;
+}
+.repeat-animation.ng-move.ng-move-active {
+    left:0;
+    opacity: 1;
+}
+
+.icon{
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    width:26px;
+    height:26px;
+}
+.left-arrow{
+    background: url("../img/left.png") center no-repeat;
+    background-size: cover;
+    margin-top:100px;
+}
+.right-arrow{
+    background: url("../img/right.png") center no-repeat;
+    background-size: cover;
+    margin-top:100px;
+}
+.next-arrow{
+    background: url("../img/nexticon.png") center no-repeat;
+    background-size: cover;
+}
+.prev-arrow{
+    background: url("../img/previcon.png") center no-repeat;
+    background-size: cover;
+}
+.forward-arrow{
+    background: url("../img/forwardicon.png") center no-repeat;
+    background-size: cover;
+}
+.backward-arrow{
+    background: url("../img/backwardicon.png") center no-repeat;
+    background-size: cover;
 }

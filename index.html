@@ -11,13 +11,8 @@
     <script type="application/javascript" src="js/lib/jquery.js"></script>
     <script type="application/javascript" src="js/lib/angular.js"></script>
     <script type="application/javascript" src="js/lib/angular-resource.min.js"></script>
-    <script type="application/javascript" src="js/lib/angular-touch.js"></script>
-    <script type="application/javascript" src="js/lib/smoothScroll.js"></script>
     <script type="application/javascript" src="js/lib/angular-animate.js"></script>
-    <script type="application/javascript" src="js/lib/angular-smooth-scroll.js"></script>
-    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="js/lib/angular-youtube-embed.js"></script>
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
 
 </head>
@@ -104,12 +99,41 @@
                     </div>
                     <div class="modal-body">
                         <div class="soundcloud">
-                            <div class="info">
-                                    <label>[[result.title]]</label>
+                            <div class="screcommend animation" ng-hide="scplaying">
+                                <div class="infolist">
+                                    <div class="info repeat-animation" ng-repeat="song in getresultperpage()" >
+                                        <div class="songtitle"><a href="" ng-click="scplayer(song.permalink_url)">[[song.title]]</a></div>
+                                    </div>
+                                </div>
+                                <div class="resultnav">
+                                    <div class="btn-group">
+                                        <a ng-click="selectPage(1)">
+                                            <span class="btn icon backward-arrow"></span>
+                                        </a>
+                                        <a ng-click="selectPrevPage()"><span class="btn icon prev-arrow"></span></a>
+                                        <div class="pagenum">
+                                            <a ng-repeat="pages in result | pageCount:pageSize:selectedPage" ng-class="activePage(pages)"
+                                               ng-click="selectPage(pages)" class="btn">
+                                                [[pages]]
+                                            </a>
+                                        </div>
+                                        <a ng-click="selectNextPage()"><span class="btn icon next-arrow"></span></a>
+                                        <a ng-click="selectPage(maxPage)">
+                                            <span class="btn icon forward-arrow"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="scplayer animation" ng-show="scplaying">
+                                <div id="player"></div>
+                                <div class="scback"><a href="" ng-click="backtolist()">Back to list</a></div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <div class="scplayingicon">
+                            <button ng-hide="scplaying" ng-click="scnowplaying()"></button>
+                        </div>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
