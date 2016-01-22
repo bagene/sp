@@ -8,155 +8,80 @@ Apriori.controller('playerController', [
     '$scope',
     '$http',
     function($scope,$http){
+        $scope.result = [];
+
+        //SC.initialize({
+        //    client_id: '28584cabeeb12dd1e9e08a24776e0684'
+        //});
+        //$scope.scplaying = false;
+        //SC.get('/tracks', { genres: 'rock', limit:100 }, function(tracks) {
+        //    $scope.result = tracks;
+        //    console.log($scope.result);
+        //
+        //    $scope.pageresult = $scope.result.length;
+        //    $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
+        //});
+
+        $scope.songs = [
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Pasko na Sinta ko',duration:'3:12'},
+            {title:'Pasko na Sinta ko',duration:'3:12'},
+            {title:'Pasko na Sinta ko',duration:'3:12'},
+            {title:'Pasko na Sinta ko',duration:'3:12'},
+            {title:'Pasko na Sinta ko',duration:'3:12'},
+            {title:'Pasko na Sinta ko',duration:'3:12'},
+            {title:'Pasko na Sinta ko',duration:'3:12'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:' Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:'Buko',duration:'5:11'}
+        ];
+        $scope.songs = $scope.result;
+        console.log($scope.songs);
+        $scope.playing = false;
+        $scope.title = "hello";
+        $scope.play = function(){
+           $scope.playing = true;
+        };
+        $scope.pause = function(){
+            $scope.playing = false;
+        };
+
+        $scope.useAprioriMod = function(){
+
+
+
+            SC.initialize({
+                client_id: '28584cabeeb12dd1e9e08a24776e0684'
+            });
+            $scope.scplaying = false;
+            SC.get('/tracks', { genres: 'rock', limit:10 }, function(tracks) {
+                var apMod = new AprioriMod();
+                $scope.result = tracks;
+                apMod.getBaseTracks($scope.result);
+                apMod.run();
+                $scope.pageresult = $scope.result.length;
+                $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
+            });
+        };
 
         SC.initialize({
             client_id: '28584cabeeb12dd1e9e08a24776e0684'
         });
-        $scope.headtitle = 'All Songs'
-        $scope.sortby = '';
-        $scope.result = [];
-        $scope.localsongs = [];
-        $scope.nowplayingid = 0;
-        $scope.nowplaying = [];
-        $scope.nowplayingindex = 0;
-        $scope.playing = false;
-        $scope.play = function(songid,songindex){
-            $scope.playing = true;
-            console.log(songindex);
-            console.log("nowplayingid = " + $scope.nowplayingid + "songid = " + songid);
-            if($scope.nowplayingid == songid && songid !=0){
-                $scope.nowplaying.resume();
-                console.log("RESUMING");
-            }else{
-                console.log("NEW SONG PLAYING");
-                if(songid == 0){
-                    songid = $scope.localsongs[0].id;
-                }
-
-                $scope.nowplayingid = songid;
-                $scope.nowplayingindex = songindex;
-                SC.stream('/tracks/' + songid, {onfinish: function(){
-                    console.log('track finished');
-                    $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
-                }}, function(sound){
-                    soundManager.stopAll();
-                    $scope.nowplaying = sound;
-                    $scope.nowplaying.play();
-                });
-            }
-        }
-
-
-
-        $scope.pause = function(){
-            console.log("PAUSE");
-            $scope.playing = false;
-            $scope.nowplaying.pause();
-        };
-
-
-
-        $scope.onload = function(){
-            //$scope.loadlocaltracks()
-        }
-
-        /*$scope.getresult = [];
-        $scope.gettracks = function(genre){
-            if($scope.getresult.isEmpty == true){
-                $scope.getresult = [];
-            }
-            SC.get('/tracks', { genres: genre, limit:100 }, function(tracks) {
-                $scope.getresult = tracks;
-                console.log($scope.getresult);
-            });
-            return $scope.getresult;
-        }*/
-
-
-        /*$scope.loadlocaltracks = function(){
-            angular.forEach($scope.genres, function(item){
-                angular.forEach($scope.gettracks(item), function(key){
-                    $scope.localsongs.push(key);
-                });
-            });
-            //console.log($scope.localsongs);
-        }*/
-
-        $scope.changegenre = function(genre){
-            $scope.sortby = genre;
-            if(genre == ''){
-                $scope.headtitle = 'All Songs';
-            }else{
-                $scope.headtitle = genre;
-            }
-        }
-
-        $scope.loadlocaltracks = function(){
-
-            SC.get('/tracks', { genres: 'pop',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: 'rock',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: 'RnB',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: 'reggae',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: '70s',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: '80s',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: '90s',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: 'japanese',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: 'korean',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-            SC.get('/tracks', { genres: 'tagalog',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    $scope.localsongs.push(item);
-                });
-            });
-
-
-            console.log($scope.localsongs);
-        }
-
         $scope.scplaying = false;
 
         $scope.pageSize = 10;
@@ -164,15 +89,15 @@ Apriori.controller('playerController', [
         $scope.pageresult = 0;
 
         $scope.getinfo = function(){
-            $scope.loadlocaltracks();
 
-            //$scope.result = $scope.gettracks('country');
-            //console.log($scope.result);
-            SC.get('/tracks', { genres: 'country', limit:100 }, function(tracks) {
-                $scope.result = tracks;
+            SC.get('/tracks', { genres: 'jrock', q:'one ok rock', limit:100 }, function(tracks) {
+               $scope.result = tracks;
+               console.log($scope.result);
+
+                $scope.pageresult = $scope.result.length;
+                $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
             });
-            $scope.pageresult = $scope.result.length;
-            $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
+
 
         }
 
@@ -248,36 +173,5 @@ Apriori.filter("pageCount", function(){
         }else{
             return [];
         }
-    }
-});
-
-Apriori.filter('convertduration', function() {
-    return function(millseconds) {
-        var seconds = Math.floor(millseconds / 1000);
-        var minutes = Math.floor(seconds/60);
-        var second = Math.floor(seconds%60);
-        var hours = Math.floor(minutes/60);
-        var minute = Math.floor(minutes%60);
-
-        var timeString = '';
-        if(hours<=0){
-            if(second<10){
-                timeString = minutes + ':0' + second;
-            }else{
-                timeString = minutes + ':' + second;
-            }
-
-        }else{
-            if(minute<10 && second<10){
-                timeString = hours + ':0' + minute + ':0' + second;
-            }else if(minute<10 && second>9){
-                timeString = hours + ':0' + minute + ':' + second;
-            }else if(minute>9 && second<10){
-                timeString = hours + ':' + minute + ':0' + second;
-            }else{
-                timeString = hours + ':' + minute + ':' + second;
-            }
-        }
-        return timeString;
     }
 });
