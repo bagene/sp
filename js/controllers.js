@@ -9,6 +9,19 @@ Apriori.controller('playerController', [
     '$http',
     function($scope,$http){
         $scope.result = [];
+
+        //SC.initialize({
+        //    client_id: '28584cabeeb12dd1e9e08a24776e0684'
+        //});
+        //$scope.scplaying = false;
+        //SC.get('/tracks', { genres: 'rock', limit:100 }, function(tracks) {
+        //    $scope.result = tracks;
+        //    console.log($scope.result);
+        //
+        //    $scope.pageresult = $scope.result.length;
+        //    $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
+        //});
+
         $scope.songs = [
             {title:'Paano ang Puso Ko',duration:'4:25'},
             {title:'Pasko na Sinta ko',duration:'3:12'},
@@ -29,7 +42,7 @@ Apriori.controller('playerController', [
             {title:'Paano ang Puso Ko',duration:'4:25'},
             {title:'Paano ang Puso Ko',duration:'4:25'},
             {title:'Paano ang Puso Ko',duration:'4:25'},
-            {title:'Paano ang Puso Ko',duration:'4:25'},
+            {title:' Paano ang Puso Ko',duration:'4:25'},
             {title:'Paano ang Puso Ko',duration:'4:25'},
             {title:'Paano ang Puso Ko',duration:'4:25'},
             {title:'Paano ang Puso Ko',duration:'4:25'},
@@ -37,6 +50,8 @@ Apriori.controller('playerController', [
             {title:'Paano ang Puso Ko',duration:'4:25'},
             {title:'Buko',duration:'5:11'}
         ];
+        $scope.songs = $scope.result;
+        console.log($scope.songs);
         $scope.playing = false;
         $scope.title = "hello";
         $scope.play = function(){
@@ -46,6 +61,23 @@ Apriori.controller('playerController', [
             $scope.playing = false;
         };
 
+        $scope.useAprioriMod = function(){
+
+
+
+            SC.initialize({
+                client_id: '28584cabeeb12dd1e9e08a24776e0684'
+            });
+            $scope.scplaying = false;
+            SC.get('/tracks', { genres: 'rock', limit:10 }, function(tracks) {
+                var apMod = new AprioriMod();
+                $scope.result = tracks;
+                apMod.getBaseTracks($scope.result);
+                apMod.run();
+                $scope.pageresult = $scope.result.length;
+                $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
+            });
+        };
 
         SC.initialize({
             client_id: '28584cabeeb12dd1e9e08a24776e0684'
