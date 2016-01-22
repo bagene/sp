@@ -40,7 +40,7 @@
     </div>
 
     <div class="playlist">
-            <div class="song" ng-repeat="song in localsongs | filter:{ genre:sortby }" ng-click="play(song.id,localsongs.indexOf(song))">
+            <div class="song" ng-class="{'playing': song.id == nowplayingid}" ng-repeat="song in localsongs | filter:{ genre:sortby }" ng-click="play(song.id,localsongs.indexOf(song))">
                     <div class="songtitle"><label >[[song.title]]</label></div>
                     <div class="songduration"><label >[[song.duration | convertduration]]</label></div>
             </div>
@@ -73,8 +73,8 @@
                         <div class="nowplaying">
                             <div class="npimg"><img src="[[nowplayingimg]]" /></div>
                             <div class="npinfo">
+                                <label>[[nowplayingtime | convertduration]]</label>
                                 <label class="nptitle">[[nowplayingtitle]]</label>
-                                <label class="npartist">--Attach duration bar here--</label>
                             </div>
                         </div>
                     </div>
