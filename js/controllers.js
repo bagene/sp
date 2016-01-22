@@ -12,14 +12,35 @@ Apriori.controller('playerController', [
         SC.initialize({
             client_id: '28584cabeeb12dd1e9e08a24776e0684'
         });
-        $scope.headtitle = 'All Songs'
+        $scope.headtitle = 'All Songs';
         $scope.sortby = '';
         $scope.result = [];
         $scope.localsongs = [];
         $scope.nowplayingid = 0;
         $scope.nowplaying = [];
         $scope.nowplayingindex = 0;
+        $scope.nowplayingimg = '';
+        $scope.nowplayingtitle = '';
+        $scope.genre = [
+            'All Songs',
+            'Pop',
+            'Rock',
+            'RnB',
+            'Reggae',
+            '70s',
+            '80s',
+            '90s',
+            'Japanese',
+            'Korean',
+            'Tagalog',
+            'Anime',
+            'Alternative',
+            'Acoustic',
+            'Instrumental'
+        ];
         $scope.playing = false;
+
+
         $scope.play = function(songid,songindex){
             $scope.playing = true;
             console.log(songindex);
@@ -35,6 +56,9 @@ Apriori.controller('playerController', [
 
                 $scope.nowplayingid = songid;
                 $scope.nowplayingindex = songindex;
+                $scope.updatenowplaying();
+                $scope.addhistory(songindex);
+                console.log($scope.songhistory);
                 SC.stream('/tracks/' + songid, {onfinish: function(){
                     console.log('track finished');
                     $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
@@ -44,8 +68,12 @@ Apriori.controller('playerController', [
                     $scope.nowplaying.play();
                 });
             }
-        }
+        };
 
+        $scope.songhistory = [];
+        $scope.addhistory = function(songindex){
+            $scope.songhistory.push($scope.localsongs[songindex]);
+        };
 
 
         $scope.pause = function(){
@@ -54,100 +82,139 @@ Apriori.controller('playerController', [
             $scope.nowplaying.pause();
         };
 
+        $scope.next = function(){
+            $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
+        };
+
+        $scope.prev = function(){
+            $scope.play($scope.localsongs[$scope.nowplayingindex-1].id,$scope.nowplayingindex-1);
+        };
+
+        $scope.updatenowplaying = function(){
+            $scope.nowplayingimg = $scope.localsongs[$scope.nowplayingindex].artwork_url;
+            $scope.nowplayingtitle = $scope.localsongs[$scope.nowplayingindex].title;
+        };
+
 
 
         $scope.onload = function(){
-            //$scope.loadlocaltracks()
-        }
+            $scope.loadlocaltracks();
+        };
 
         /*$scope.getresult = [];
         $scope.gettracks = function(genre){
-            if($scope.getresult.isEmpty == true){
-                $scope.getresult = [];
-            }
+
             SC.get('/tracks', { genres: genre, limit:100 }, function(tracks) {
                 $scope.getresult = tracks;
                 console.log($scope.getresult);
             });
+            console.log($scope.getresult);
             return $scope.getresult;
-        }*/
+        };
 
 
-        /*$scope.loadlocaltracks = function(){
-            angular.forEach($scope.genres, function(item){
-                angular.forEach($scope.gettracks(item), function(key){
-                    $scope.localsongs.push(key);
-                });
+        $scope.loadlocaltracks2 = function(){
+            angular.forEach($scope.genre, function(item){
+                if($scope.genre.indexOf(item) > 0){
+                    console.log(item);
+                    angular.forEach($scope.gettracks(item), function(key){
+                        $scope.localsongs.push(key);
+                    });
+                }
             });
             //console.log($scope.localsongs);
-        }*/
+        };*/
 
         $scope.changegenre = function(genre){
-            $scope.sortby = genre;
-            if(genre == ''){
-                $scope.headtitle = 'All Songs';
+            if(genre == 'All Songs'){
+                $scope.sortby = '';
             }else{
-                $scope.headtitle = genre;
+                $scope.sortby = genre;
             }
-        }
+            $scope.headtitle = genre;
+        };
 
         $scope.loadlocaltracks = function(){
 
-            SC.get('/tracks', { genres: 'pop',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[1] ,duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: 'rock',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[2] ,duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: 'RnB',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[3] ,duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: 'reggae',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[4] ,duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: '70s',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[5],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: '80s',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[6],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: '90s',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[7],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: 'japanese',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[8],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: 'korean',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[9],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
             });
 
-            SC.get('/tracks', { genres: 'tagalog',duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+            SC.get('/tracks', { genres: $scope.genre[10],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+                angular.forEach(tracks, function(item){
+                    $scope.localsongs.push(item);
+                });
+            });
+
+            SC.get('/tracks', { genres: $scope.genre[11],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+                angular.forEach(tracks, function(item){
+                    $scope.localsongs.push(item);
+                });
+            });
+
+            SC.get('/tracks', { genres: $scope.genre[12],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+                angular.forEach(tracks, function(item){
+                    $scope.localsongs.push(item);
+                });
+            });
+
+            SC.get('/tracks', { genres: $scope.genre[13],duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
+                angular.forEach(tracks, function(item){
+                    $scope.localsongs.push(item);
+                });
+            });
+
+            SC.get('/tracks', { genres: $scope.genre[14] ,duration: { from: 135000, to:500000 }, limit:100 }, function(tracks) {
                 angular.forEach(tracks, function(item){
                     $scope.localsongs.push(item);
                 });
@@ -155,7 +222,7 @@ Apriori.controller('playerController', [
 
 
             console.log($scope.localsongs);
-        }
+        };
 
         $scope.scplaying = false;
 
@@ -163,8 +230,7 @@ Apriori.controller('playerController', [
         $scope.selectedPage = 1;
         $scope.pageresult = 0;
 
-        $scope.getinfo = function(){
-            $scope.loadlocaltracks();
+        $scope.getrecommendation = function(){
 
             //$scope.result = $scope.gettracks('country');
             //console.log($scope.result);
@@ -174,20 +240,20 @@ Apriori.controller('playerController', [
             $scope.pageresult = $scope.result.length;
             $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
 
-        }
+        };
 
         $scope.scnowplaying = function(){
             $scope.scplaying = true;
-        }
+        };
 
         $scope.scplayer = function(permalink_url) {
             $scope.scplaying = true;
             SC.oEmbed(permalink_url, { auto_play:true }, document.getElementById('player'));
-        }
+        };
 
         $scope.backtolist = function(){
             $scope.scplaying = false;
-        }
+        };
 
         $scope.index = 0;
         $scope.getresultperpage = function(){
@@ -204,7 +270,7 @@ Apriori.controller('playerController', [
 
             $scope.index=i;
             return result;
-        }
+        };
 
         $scope.selectPrevPage = function(){
             if($scope.selectedPage>1)
@@ -219,7 +285,7 @@ Apriori.controller('playerController', [
 
         $scope.activePage = function(index){
             return index==$scope.selectedPage ? "active" : "";
-        }
+        };
 
         $scope.selectPage = function(page){
             $scope.selectedPage = page;

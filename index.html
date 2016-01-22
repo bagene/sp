@@ -32,17 +32,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="" ng-click="changegenre('')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">All Songs</a></li>
-                        <li><a href="" ng-click="changegenre('Pop')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">Pop</a></li>
-                        <li><a href="" ng-click="changegenre('Rock')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">Rock</a></li>
-                        <li><a href="" ng-click="changegenre('RnB')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">RnB</a></li>
-                        <li><a href="" ng-click="changegenre('Reggae')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">Reggae</a></li>
-                        <li><a href="" ng-click="changegenre('70s')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">70s</a></li>
-                        <li><a href="" ng-click="changegenre('80s')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">80s</a></li>
-                        <li><a href="" ng-click="changegenre('90s')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">90s</a></li>
-                        <li><a href="" ng-click="changegenre('Japanese')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">Japanese</a></li>
-                        <li><a href="" ng-click="changegenre('Korean')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">Korean</a></li>
-                        <li><a href="" ng-click="changegenre('Tagalog')" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">Tagalog</a></li>
+                        <li ng-repeat="g in genre"><a href="" ng-click="changegenre(g)" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">[[g]]</a></li>
                     </ul>
                 </div>
             </div>
@@ -61,13 +51,13 @@
             <button id="npicon" ng-show="playing" data-toggle="modal" data-target="#nowplayingModal"></button>
         </div>
         <div class="player">
-            <button id="prev" ng-click="play(localsongs[nowplayingindex-1].id,nowplayingindex-1)"></button>
+            <button id="prev" ng-click="prev()"></button>
             <button id="play" ng-hide="playing" ng-click="play(nowplayingid,nowplayingindex)"></button>
             <button id="pause" ng-show="playing" ng-click="pause()"></button>
-            <button id="next" ng-click="play(localsongs[nowplayingindex+1].id,nowplayingindex+1)"></button>
+            <button id="next" ng-click="next()"></button>
         </div>
         <div class="recommendation">
-            <button id="recommendicon" ng-show="playing" data-toggle="modal" data-target="#recommendationModal" ng-click="getinfo()"></button>
+            <button id="recommendicon" ng-show="playing" data-toggle="modal" data-target="#recommendationModal" ng-click="getrecommendation()"></button>
         </div>
     </div>
 
@@ -81,9 +71,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="nowplaying">
-                            <div class="npimg"><img src="[[localsongs[nowplayingindex].artwork_url]]" /></div>
+                            <div class="npimg"><img src="[[nowplayingimg]]" /></div>
                             <div class="npinfo">
-                                <label class="nptitle">[[localsongs[nowplayingindex].title]]</label>
+                                <label class="nptitle">[[nowplayingtitle]]</label>
                                 <label class="npartist">--Attach duration bar here--</label>
                             </div>
                         </div>

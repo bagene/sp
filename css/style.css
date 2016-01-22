@@ -156,6 +156,7 @@ button#pause,button#play{
     text-align: center;
     display:block;
     margin-top:10px;
+    color:black;
 }
 .npinfo label{
     display:block;
