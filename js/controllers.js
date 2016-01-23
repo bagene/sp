@@ -34,7 +34,7 @@ Apriori.controller('playerController', [
             'Japanese',
             'Korean',
             'Tagalog',
-            'Anime',
+            'Love Song',
             'Alternative',
             'Acoustic',
             'Instrumental'

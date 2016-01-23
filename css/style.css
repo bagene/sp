@@ -395,6 +395,12 @@ div.menu ul{
     font-size:18px;
     text-align: center;
 }
+div.song:hover, div.song label:hover{
+    cursor:pointer;
+}
+.footer button:active,.footer button:focus,.footer button:hover{
+    border:none;
+}
 
 @media (min-width: 768px){
     .navbar-header{
