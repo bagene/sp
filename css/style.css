@@ -98,7 +98,7 @@ div.scplayingicon{
 
 
 div.player{
-    width:60%;
+    width:59%;
     text-align: center;
     display:inline-block;
 }
@@ -406,6 +406,15 @@ div.song:hover, div.song label:hover{
     .navbar-header{
         display:block;
         width:100%;
-        text-align: center;
     }
+
+    div.recommendation{
+        text-align: right;
+    }
+
+    div.playingicon{
+        text-align: left;
+        padding-left:18px;
+    }
+
 }

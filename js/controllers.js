@@ -28,16 +28,16 @@ Apriori.controller('playerController', [
             'Rock',
             'RnB',
             'Reggae',
-            '70s',
-            '80s',
-            '90s',
+            'Blues',
+            'Jazz',
+            'Opera',
             'Japanese',
             'Korean',
             'Tagalog',
-            'Love Song',
+            'Rap',
             'Alternative',
-            'Acoustic',
-            'Instrumental'
+            'Classical',
+            'Electronic'
         ];
         $scope.playing = false;
 
