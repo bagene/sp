@@ -6,6 +6,7 @@ function AprioriMod(){
     var baseTracks=[];
     var itemsets=[];
     var itemFreq=[];
+    var candidateList={};
 
     this.getTracks = function(tracks){
         tracks = tracks;
@@ -62,6 +63,31 @@ function AprioriMod(){
         }
         console.log(itemsets);
         console.log(itemFreq);
+    };
+
+    function generateCandidate(k){
+        var tempCandList = {};
+        var count =0;
+        if(k==1){
+            for(i in itemsets){
+                tempCandList.push({count: itemsets[i]});
+                count++;
+            }
+        }else if(k==2){
+            for(i in candidateList){
+                if(i+1!=candidateList.size()){
+                    for(j=i+1;j<candidateList.size;j++){
+                        var tempArray = [];
+                        tempArray.push(itemsets[i]);
+                        tempArray.push(itemsets[j]);
+                        tempCandList.push({count: tempArray});
+                        count++;
+                    }
+                }
+            }
+        }else{
+
+        }
     };
 }
 
