@@ -30,12 +30,6 @@ Apriori.controller('playerController', [
             'Reggae',
             'Blues',
             'Jazz',
-            'Opera',
-            'Japanese',
-            'Korean',
-            'Tagalog',
-            'Rap',
-            'Alternative',
             'Classical',
             'Electronic'
         ];
@@ -43,8 +37,12 @@ Apriori.controller('playerController', [
 
 
         $scope.play = function(songid,songindex){
+            console.log("Song History");
+            console.log($scope.songhistory);
+            console.log("List of All Songs");
+            console.log($scope.localsongs);
             $scope.playing = true;
-            console.log(songindex);
+            console.log("Song Index : " + songindex);
             //console.log("nowplayingid = " + $scope.nowplayingid + "songid = " + songid);
             if($scope.nowplayingid == songid && songid !=0){
                 $scope.nowplaying.resume();
@@ -131,11 +129,11 @@ Apriori.controller('playerController', [
             //console.log($scope.localsongs);
         };*/
 
-        $scope.skip = function(){
+        /*$scope.skip = function(){
             //$scope.nowplaying.seek(200000);
             console.log();
             $scope.nowplaying.currentTime()
-        }
+        }*/
 
         $scope.changegenre = function(genre){
             if(genre == 'All Songs'){
@@ -146,136 +144,119 @@ Apriori.controller('playerController', [
             $scope.headtitle = genre;
         };
 
-        $scope.limiter = 100;
+        $scope.limiter = 200;
         $scope.durationlimitfrom = 150000;
         $scope.durationlimitto = 600000;
         $scope.loadlocaltracks = function(){
 
             SC.get('/tracks', { genres: $scope.genre[1] , limit:$scope.limiter }, function(tracks) {
+               var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        counter++;
                     }
                 });
+                console.log($scope.genre[1] + " : " + counter);
                 $scope.$apply();
             });
 
             SC.get('/tracks', { genres: $scope.genre[2] , limit:$scope.limiter }, function(tracks) {
+                var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        if(counter < 2){
+                            $scope.songhistory.push(item);
+                        }
+                        counter++;
                     }
                 });
+                console.log($scope.genre[2] + " : " + counter);
                 $scope.$apply();
             });
 
             SC.get('/tracks', { genres: $scope.genre[3] , limit:$scope.limiter }, function(tracks) {
+                var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        if(counter < 3){
+                            $scope.songhistory.push(item);
+                        }
+                        counter++;
                     }
                 });
+                console.log($scope.genre[3] + " : " + counter);
                 $scope.$apply();
             });
 
             SC.get('/tracks', { genres: $scope.genre[4] ,limit:$scope.limiter }, function(tracks) {
+                var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        if(counter == 0){
+                            $scope.songhistory.push(item);
+                        }
+                        counter++;
                     }
                 });
+                console.log($scope.genre[4] + " : " + counter);
                 $scope.$apply();
             });
 
             SC.get('/tracks', { genres: $scope.genre[5], limit:$scope.limiter }, function(tracks) {
+                var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        counter++;
                     }
                 });
+                console.log($scope.genre[5] + " : " + counter);
                 $scope.$apply();
             });
 
             SC.get('/tracks', { genres: $scope.genre[6], limit:$scope.limiter }, function(tracks) {
+                var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        counter++;
                     }
                 });
+                console.log($scope.genre[6] + " : " + counter);
                 $scope.$apply();
             });
 
             SC.get('/tracks', { genres: $scope.genre[7], limit:$scope.limiter }, function(tracks) {
+                var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        if(counter < 4){
+                            $scope.songhistory.push(item);
+                        }
+                        counter++;
                     }
                 });
+                console.log($scope.genre[7] + " : " + counter);
                 $scope.$apply();
             });
 
             SC.get('/tracks', { genres: $scope.genre[8], limit:$scope.limiter }, function(tracks) {
+                var counter = 0;
                 angular.forEach(tracks, function(item){
                     if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
                         $scope.localsongs.push(item);
+                        counter++;
                     }
                 });
+                console.log($scope.genre[8] + " : " + counter);
                 $scope.$apply();
             });
 
-            SC.get('/tracks', { genres: $scope.genre[9], limit:$scope.limiter }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
-                        $scope.localsongs.push(item);
-                    }
-                });
-                $scope.$apply();
-            });
-
-            SC.get('/tracks', { genres: $scope.genre[10], limit:$scope.limiter }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
-                        $scope.localsongs.push(item);
-                    }
-                });
-                $scope.$apply();
-            });
-
-            SC.get('/tracks', { genres: $scope.genre[11], limit:$scope.limiter }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
-                        $scope.localsongs.push(item);
-                    }
-                });
-                $scope.$apply();
-            });
-
-            SC.get('/tracks', { genres: $scope.genre[12],limit:$scope.limiter }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
-                        $scope.localsongs.push(item);
-                    }
-                });
-                $scope.$apply();
-            });
-
-            SC.get('/tracks', { genres: $scope.genre[13], limit:$scope.limiter }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
-                        $scope.localsongs.push(item);
-                    }
-                });
-                $scope.$apply();
-            });
-
-            SC.get('/tracks', { genres: $scope.genre[14] , limit:$scope.limiter }, function(tracks) {
-                angular.forEach(tracks, function(item){
-                    if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
-                        $scope.localsongs.push(item);
-                    }
-                });
-                $scope.$apply();
-            });
 
         };
 
@@ -332,13 +313,13 @@ Apriori.controller('playerController', [
         $scope.selectPrevPage = function(){
             if($scope.selectedPage>1)
                 $scope.selectedPage--;
-        }
+        };
 
         $scope.selectNextPage = function(){
             if($scope.selectedPage<$scope.result.length/$scope.pageSize)
                 $scope.selectedPage++;
 
-        }
+        };
 
         $scope.activePage = function(index){
             return index==$scope.selectedPage ? "active" : "";
