@@ -395,7 +395,7 @@ div.menu ul{
     font-size:18px;
     text-align: center;
 }
-div.song:hover, div.song label:hover{
+div.song:hover, div.song label:hover,div.info:hover, div.info label:hover{
     cursor:pointer;
 }
 .footer button:active,.footer button:focus,.footer button:hover{

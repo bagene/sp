@@ -285,6 +285,7 @@ Apriori.controller('playerController', [
         };
 
         $scope.scplayer = function(permalink_url) {
+            $scope.pause();
             $scope.scplaying = true;
             SC.oEmbed(permalink_url, { auto_play:true }, document.getElementById('player'));
         };
