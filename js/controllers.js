@@ -16,12 +16,14 @@ Apriori.controller('playerController', [
         $scope.sortby = '';
         $scope.result = [];
         $scope.localsongs = [];
+        $scope.searchlist = [];
         $scope.nowplayingid = 0;
         $scope.nowplaying = [];
         $scope.nowplayingindex = 0;
         $scope.nowplayingimg = '';
         $scope.nowplayingtitle = '';
         $scope.nowplayingtime = 0;
+        $scope.nowplayinginfo = [];
         $scope.genre = [
             'All Songs',
             'Pop',
@@ -41,44 +43,83 @@ Apriori.controller('playerController', [
             console.log($scope.songhistory);
             console.log("List of All Songs");
             console.log($scope.localsongs);
+
+            if(songid == undefined){
+                if($scope.searching == false){
+                    songid = $scope.localsongs[0].id;
+                }else{
+                    songid = $scope.searchlist[0].id;
+                }
+            }
+
             $scope.playing = true;
             console.log("Song Index : " + songindex);
             //console.log("nowplayingid = " + $scope.nowplayingid + "songid = " + songid);
-            if($scope.nowplayingid == songid && songid !=0){
+            if($scope.nowplayinginfo.id == songid && songid !=0){
                 $scope.nowplaying.resume();
-                console.log("Resuming : " + $scope.localsongs[songindex].title);
+                console.log("Resuming : " + $scope.nowplayinginfo.title);
             }else{
-                if(songid == 0){
-                    songid = $scope.localsongs[0].id;
+
+                if($scope.searching == false){
+                    $scope.nowplayinginfo = $scope.localsongs[songindex];
+                }else{
+                    $scope.nowplayinginfo = $scope.searchlist[songindex];
                 }
 
-                $scope.nowplayingid = songid;
+
                 $scope.nowplayingindex = songindex;
                 $scope.updatenowplaying();
-                $scope.addhistory(songindex);
+                $scope.addhistory();
                 //console.log($scope.songhistory);
                 SC.stream('/tracks/' + songid, {onfinish: function(){
                     console.log('track finished');
-                    $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
+                    if($scope.searching == false){
+                        $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
+                    }else{
+                        $scope.play($scope.searchlist[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
+                    }
                     $scope.$apply();
                 },whileplaying: function () {
                     $scope.nowplayingtime = this.position;
                     $scope.$apply();
-                }}, function(sound){
+                }}, function(sound,error){
+                    //if (error) alert('Error: ' + error.message);
                     soundManager.stopAll();
                     $scope.nowplaying = sound;
                     $scope.nowplaying.play();
                     //console.log(sound);
-                    console.log("Now Playing : " + $scope.localsongs[songindex].title);
+
+                    console.log("Now Playing : " + $scope.nowplayinginfo.title);
+                    console.log($scope.nowplayinginfo);
                 });
             }
         };
 
         $scope.songhistory = [];
-        $scope.addhistory = function(songindex){
-            $scope.songhistory.push($scope.localsongs[songindex]);
+        $scope.addhistory = function(){
+            $scope.songhistory.push($scope.nowplayinginfo);
         };
 
+        $scope.searching = false;
+        $scope.getsearch = function(){
+            var search = prompt("Search");
+            if(search != null){
+                $scope.searchlist = [];
+                $scope.headtitle = search;
+                $scope.searching = true;
+                SC.get('/tracks', { q:search , limit:$scope.limiter }, function(tracks) {
+                    var counter = 0;
+                    angular.forEach(tracks, function(item){
+                        if(item.streamable == true && item.duration > $scope.durationlimitfrom && item.duration < $scope.durationlimitto) {
+                            $scope.searchlist.push(item);
+                            counter++;
+                        }
+                    });
+                    console.log("Search Result : " + counter);
+                    $scope.$apply();
+                });
+            }
+        };
 
         $scope.pause = function(){
             console.log("PAUSE");
@@ -87,16 +128,29 @@ Apriori.controller('playerController', [
         };
 
         $scope.next = function(){
-            $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
+            if($scope.searching == false){
+                $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
+            }else{
+                $scope.play($scope.searchlist[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
+            }
         };
 
         $scope.prev = function(){
-            $scope.play($scope.localsongs[$scope.nowplayingindex-1].id,$scope.nowplayingindex-1);
+            if($scope.searching == false){
+                $scope.play($scope.localsongs[$scope.nowplayingindex-1].id,$scope.nowplayingindex-1);
+            }else{
+                $scope.play($scope.searchlist[$scope.nowplayingindex-1].id,$scope.nowplayingindex-1);
+            }
         };
 
         $scope.updatenowplaying = function(){
-            $scope.nowplayingimg = $scope.localsongs[$scope.nowplayingindex].artwork_url;
-            $scope.nowplayingtitle = $scope.localsongs[$scope.nowplayingindex].title;
+            if($scope.searching == false){
+                $scope.nowplayingimg = $scope.localsongs[$scope.nowplayingindex].artwork_url;
+                $scope.nowplayingtitle = $scope.localsongs[$scope.nowplayingindex].title;
+            }else{
+                $scope.nowplayingimg = $scope.searchlist[$scope.nowplayingindex].artwork_url;
+                $scope.nowplayingtitle = $scope.searchlist[$scope.nowplayingindex].title;
+            }
         };
 
 
@@ -136,6 +190,7 @@ Apriori.controller('playerController', [
         }*/
 
         $scope.changegenre = function(genre){
+            $scope.searching = false;
             if(genre == 'All Songs'){
                 $scope.sortby = '';
             }else{

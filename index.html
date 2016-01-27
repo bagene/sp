@@ -33,6 +33,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li ng-repeat="g in genre"><a href="" ng-click="changegenre(g)" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">[[g]]</a></li>
+                        <li><a href="" ng-click="getsearch()" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">Search</a></li>
                     </ul>
                 </div>
             </div>
@@ -40,10 +41,14 @@
     </div>
 
     <div class="playlist">
-            <div class="song" ng-class="{'playing': song.id == nowplayingid}" ng-repeat="song in localsongs | filter:{ genre:sortby }" ng-click="play(song.id,localsongs.indexOf(song))">
-                    <div class="songtitle"><label >[[song.title]]</label></div>
-                    <div class="songduration"><label >[[song.duration | convertduration]]</label></div>
-            </div>
+        <div class="song" ng-hide="searching" ng-class="{'playing': song.id == nowplayinginfo.id}" ng-repeat="song in localsongs | filter:{ genre:sortby }" ng-click="play(song.id,localsongs.indexOf(song))">
+            <div class="songtitle"><label >[[song.title]]</label></div>
+            <div class="songduration"><label >[[song.duration | convertduration]]</label></div>
+        </div>
+        <div class="song" ng-show="searching" ng-class="{'playing': song.id == nowplayinginfo.id}" ng-repeat="song in searchlist" ng-click="play(song.id,searchlist.indexOf(song))">
+            <div class="songtitle"><label >[[song.title]]</label></div>
+            <div class="songduration"><label >[[song.duration | convertduration]]</label></div>
+        </div>
     </div>
 
     <div class="footer navbar navbar-default navbar-fixed-bottom">
@@ -52,7 +57,7 @@
         </div>
         <div class="player">
             <button id="prev" ng-click="prev()"></button>
-            <button id="play" ng-hide="playing" ng-click="play(nowplayingid,nowplayingindex)"></button>
+            <button id="play" ng-hide="playing" ng-click="play(nowplayinginfo.id,nowplayingindex)"></button>
             <button id="pause" ng-show="playing" ng-click="pause()"></button>
             <button id="next" ng-click="next()"></button>
         </div>

@@ -24,6 +24,9 @@ body{
     display:inline-block;
     font-size:31px;
     padding-left:10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .navbar-default,.modal-header,.modal-footer{
     background: url("../img/blackbg.png") center no-repeat;
