@@ -36,13 +36,13 @@ Apriori.controller('playerController', [
             'Electronic'
         ];
         $scope.playing = false;
-
+        var ap = new AprioriMod();
 
         $scope.play = function(songid,songindex){
-            console.log("Song History");
-            console.log($scope.songhistory);
-            console.log("List of All Songs");
-            console.log($scope.localsongs);
+            //console.log("Song History");
+            //console.log($scope.songhistory);
+            //console.log("List of All Songs");
+            //console.log($scope.localsongs);
 
             if(songid == undefined){
                 if($scope.searching == false){
@@ -53,11 +53,11 @@ Apriori.controller('playerController', [
             }
 
             $scope.playing = true;
-            console.log("Song Index : " + songindex);
+            //console.log("Song Index : " + songindex);
             //console.log("nowplayingid = " + $scope.nowplayingid + "songid = " + songid);
             if($scope.nowplayinginfo.id == songid && songid !=0){
                 $scope.nowplaying.resume();
-                console.log("Resuming : " + $scope.nowplayinginfo.title);
+                //console.log("Resuming : " + $scope.nowplayinginfo.title);
             }else{
 
                 if($scope.searching == false){
@@ -72,7 +72,7 @@ Apriori.controller('playerController', [
                 $scope.addhistory();
                 //console.log($scope.songhistory);
                 SC.stream('/tracks/' + songid, {onfinish: function(){
-                    console.log('track finished');
+                    //console.log('track finished');
                     if($scope.searching == false){
                         $scope.play($scope.localsongs[$scope.nowplayingindex+1].id,$scope.nowplayingindex+1);
                     }else{
@@ -89,8 +89,8 @@ Apriori.controller('playerController', [
                     $scope.nowplaying.play();
                     //console.log(sound);
 
-                    console.log("Now Playing : " + $scope.nowplayinginfo.title);
-                    console.log($scope.nowplayinginfo);
+                    //console.log("Now Playing : " + $scope.nowplayinginfo.title);
+                    //console.log($scope.nowplayinginfo);
                 });
             }
         };
@@ -115,14 +115,14 @@ Apriori.controller('playerController', [
                             counter++;
                         }
                     });
-                    console.log("Search Result : " + counter);
+                    //console.log("Search Result : " + counter);
                     $scope.$apply();
                 });
             }
         };
 
         $scope.pause = function(){
-            console.log("PAUSE");
+            //console.log("PAUSE");
             $scope.playing = false;
             $scope.nowplaying.pause();
         };
@@ -213,6 +213,7 @@ Apriori.controller('playerController', [
                     }
                 });
                 console.log($scope.genre[1] + " : " + counter);
+
                 $scope.$apply();
             });
 
@@ -227,7 +228,7 @@ Apriori.controller('playerController', [
                         counter++;
                     }
                 });
-                console.log($scope.genre[2] + " : " + counter);
+                //console.log($scope.genre[2] + " : " + counter);
                 $scope.$apply();
             });
 
@@ -242,7 +243,7 @@ Apriori.controller('playerController', [
                         counter++;
                     }
                 });
-                console.log($scope.genre[3] + " : " + counter);
+                //console.log($scope.genre[3] + " : " + counter);
                 $scope.$apply();
             });
 
@@ -257,7 +258,7 @@ Apriori.controller('playerController', [
                         counter++;
                     }
                 });
-                console.log($scope.genre[4] + " : " + counter);
+                //console.log($scope.genre[4] + " : " + counter);
                 $scope.$apply();
             });
 
@@ -269,7 +270,7 @@ Apriori.controller('playerController', [
                         counter++;
                     }
                 });
-                console.log($scope.genre[5] + " : " + counter);
+                //console.log($scope.genre[5] + " : " + counter);
                 $scope.$apply();
             });
 
@@ -281,7 +282,7 @@ Apriori.controller('playerController', [
                         counter++;
                     }
                 });
-                console.log($scope.genre[6] + " : " + counter);
+                //console.log($scope.genre[6] + " : " + counter);
                 $scope.$apply();
             });
 
@@ -296,7 +297,7 @@ Apriori.controller('playerController', [
                         counter++;
                     }
                 });
-                console.log($scope.genre[7] + " : " + counter);
+                //console.log($scope.genre[7] + " : " + counter);
                 $scope.$apply();
             });
 
@@ -308,7 +309,7 @@ Apriori.controller('playerController', [
                         counter++;
                     }
                 });
-                console.log($scope.genre[8] + " : " + counter);
+                //console.log($scope.genre[8] + " : " + counter);
                 $scope.$apply();
             });
 
@@ -322,8 +323,7 @@ Apriori.controller('playerController', [
         $scope.pageresult = 0;
 
         $scope.getrecommendation = function(){
-
-            console.log($scope.localsongs);
+            //console.log($scope.localsongs);
             //$scope.result = $scope.gettracks('country');
             //console.log($scope.result);
             SC.get('/tracks', { genres: 'country', limit:100 }, function(tracks) {
@@ -331,6 +331,10 @@ Apriori.controller('playerController', [
                 $scope.pageresult = $scope.result.length;
                 $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
                 $scope.$apply();
+
+                ap.getBaseTracks($scope.songhistory);
+                ap.getTracks($scope.localsongs);
+                ap.run();
             });
 
         };
