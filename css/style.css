@@ -61,6 +61,7 @@ body{
 
 .song div.songtitle{
     display:inline-block;
+    +
     width:80%;
     height:100%;
 }
