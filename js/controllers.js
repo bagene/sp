@@ -39,8 +39,8 @@ Apriori.controller('playerController', [
         var ap = new AprioriMod();
 
         $scope.play = function(songid,songindex){
-            //console.log("Song History");
-            //console.log($scope.songhistory);
+            console.log("Song History");
+            console.log($scope.songhistory);
             //console.log("List of All Songs");
             //console.log($scope.localsongs);
 
