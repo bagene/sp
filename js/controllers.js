@@ -326,16 +326,15 @@ Apriori.controller('playerController', [
             //console.log($scope.localsongs);
             //$scope.result = $scope.gettracks('country');
             //console.log($scope.result);
-            SC.get('/tracks', { genres: 'country', limit:100 }, function(tracks) {
-                $scope.result = tracks;
-                $scope.pageresult = $scope.result.length;
-                $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
-                $scope.$apply();
 
                 ap.getBaseTracks($scope.songhistory);
                 ap.getTracks($scope.localsongs);
                 ap.run();
-            });
+
+                $scope.result = ap.getFreqTracks();
+                $scope.pageresult = $scope.result.length;
+                $scope.maxPage = Math.ceil($scope.result.length/$scope.pageSize);
+
 
         };
 

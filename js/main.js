@@ -28,33 +28,69 @@ function AprioriMod(){
 
     this.run = function(){
         minSup=tracks.length*0.10;
-        console.log(minSup);
-
         getItemsets();
-        //console.log(itemsets);
-        //console.log(itemFreq);
-        //console.log(baseTracks);
-        //console.log(itemsets);
+        //generateCandidate();
+        //calculateFrequent();
         //k++;
-        generateCandidate();
-        calculateFrequent();
-        //console.log(candidateList);
-        //console.log(candidateSup);
-        //console.log(frequentList);
-        k++;
-        generateCandidate();
-        calculateFrequent();
-        k++;
-        generateCandidate();
-        calculateFrequent();
-        //console.log(candidateList);
-        //console.log(candidateSup);
-        console.log(frequentList);
-
+        //generateCandidate();
+        //calculateFrequent();
+        //k++;
+        do{
+            generateCandidate();
+            calculateFrequent();
+            k++;
+        }while(Object.keys(candidateList).length>1);
+        //this.getFreqTracks();
     };
 
+    this.getFreqTracks = function(){
+        console.log(frequentList);
+        var t = [];
+
+        for(i=Object.keys(frequentList).length-1;i>=0;i--){
+            for(j=0;j<tracks.length;j++){
+                if(frequentList[i].length>1){
+                    var count=0;
+
+                    if(frequentList[i].indexOf(tracks[j].title.substr(0,tracks[j].title.indexOf(" - ")))!=-1){
+                        count++;
+                    }
+                    if(frequentList[i].indexOf(tracks[j].genre)!=-1){
+                        count++;
+                    }
+                    if(frequentList[i].indexOf(parseInt((tracks[j].duration/1000)/60))!=-1){
+                        count++;
+                    }
+                    if(frequentList[i].indexOf(tracks[j].release_year)!=-1){
+                        count++;
+                    }
+                    if(frequentList[i].indexOf(tracks[j].bpm)!=-1){
+                        count++;
+                    }
+                    if(frequentList[i].indexOf(tracks[j].label_name)!=-1){
+                        count++;
+                    }
+                    if(count==frequentList[i].length){
+                        console.log("asgasdf");
+                        t.push(tracks[j]);
+                    }
+                }
+            }
+        }
+        console.log(t);
+        return t;
+    }
+
+    function searchObj(obj1, obj2){
+        for(i=0;i<obj1.length;i++){
+            if(obj2==obj1[i])
+                return true;
+        }
+        return false;
+    }
+
+
     function getItemsets(){
-        console.log(baseTracks);
         for(p in baseTracks){
             //this.itemsets.push(this.baseTracks[p].title);
             if(baseTracks[p].title.indexOf("-")){
@@ -162,7 +198,6 @@ function AprioriMod(){
                 }
             }
         }
-        console.log(tempCandList);
         candidateList = tempCandList;
         candidateSup = tempSupport.slice();
     };
@@ -253,15 +288,14 @@ function AprioriMod(){
                 }
             }
         }
-        console.log(tempCandSup);
         if(Object.keys(tempFreqList).length){
             candidateList = {};
             for(i=0;i<Object.keys(tempFreqList).length;i++)
                 candidateList[i]=tempFreqList[i];
         }
-
-
     }
+
+
 }
 
 
